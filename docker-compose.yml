@@ -1,0 +1,24 @@
+version: '3'
+services:
+  mysql-database:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: userdb
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    container_name: mysql-database
+
+  userManagement:
+    image: digicert/usermanagement:1.0.1
+    ports:
+      - "9000:9000"
+    container_name: user-management
+    volumes:
+      - ./app_settings:/opt/apps/config
+    depends_on:
+      - mysql-database
